@@ -5,7 +5,7 @@
 
 `define default_netname none
 
-module tt_um_example (
+module tt_um_motor (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -17,8 +17,10 @@ module tt_um_example (
 );
 
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uio_out = 0;
-  assign uio_oe  = 0;
-
-endmodule
+    motor_a_pasos U1 (.CLK(ui_in[7]), .RST(ui_in[6]), .select(uio_in[7:6]), .sentido(uio_in[5]), .paso(uio_in[4]), .I1(uio_out[3]), .I2(uio_out[2]),
+                      .I3(uio_out[1]), .I4(uio_out[0]));
+    assign uio_oe = 8'b00001111;
+    assign uio_out[7:4] = 4'b0000;
+    assign uo_out[7:0] = 8'b00000000;
+endmodule 
+    
